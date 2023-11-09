@@ -116,3 +116,21 @@ remix dev --tls-key=key.pem --tls-cert=cert.pem -c "node ./server.js"
 Your app should now be running with local TLS!
 
 [mkcert]: https://github.com/FiloSottile/mkcert#installation
+
+## Running `remix dev` with local TLS via local-ssl-proxy
+
+An alternative is to use the (local-ssl-proxy)[https://www.npmjs.com/package/local-ssl-proxy] npm package to proxy requests to your remix dev server.
+
+👉 Install local-ssl-proxy:
+
+```shellscript nonumber
+npm install --save-dev local-ssl-proxy
+```
+
+Update your `package.json` scripts to use the proxy (either update the `dev` script or add another):
+
+`"dev": "remix dev & local-ssl-proxy --source 3001 --target 3000"`
+
+When you run your dev server you can access your application over ssl (You'll get a warning because the certificate is self-signed, this is safe to ignore during development). Alternatively you can use your own generated cert as with the previous examples and pass into local-ssl-proxy:
+
+`"dev": "remix dev & local-ssl-proxy --key ~/key.pem --cert ~/cert.pem --source 3001 --target 3000"`
